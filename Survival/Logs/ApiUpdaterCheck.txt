@@ -1,0 +1,30 @@
+[api-updater (non-obsolete-error-filter)] 19/07/2021 15:14:09 : Starting C:/Users/Yibiq/Desktop/unity/2020.3.0f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 484.5219ms
+moved types parse time: 86ms
+candidates parse time : 29ms
+C# parse time         : 709ms
+candidates check time : 74ms
+console write time    : 1ms
+
+[api-updater (non-obsolete-error-filter)] 29/07/2021 19:17:42 : Starting C:/Users/Yibiq/Desktop/unity/2020.3.0f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 791.2945ms
+moved types parse time: 102ms
+candidates parse time : 12ms
+C# parse time         : 715ms
+candidates check time : 132ms
+console write time    : 2ms
+
+[api-updater (non-obsolete-error-filter)] 06/08/2021 22:33:10 : Starting C:/Users/Yibiq/Desktop/unity/2020.3.0f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 618.3913ms
+moved types parse time: 82ms
+candidates parse time : 13ms
+C# parse time         : 542ms
+candidates check time : 68ms
+console write time    : 1ms
+
