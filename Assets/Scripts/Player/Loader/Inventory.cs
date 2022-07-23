@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,13 +39,4 @@ public class Inventory : MonoBehaviour
             objectTags.Add(tag, 1);
     }
     public int GetCountOfObject(string tag) => objectTags.ContainsKey(tag) ? objectTags[tag] : 0;
-    public void PrintCountOfAllObjects()
-    {
-        string output = "";
-        foreach (string tag in objectTags.Keys)
-        {
-            output += tag + ": " + objectTags[tag].ToString() + "\n";
-        }
-        Debug.Log("Inventory : \n" + output);
-    }
 }

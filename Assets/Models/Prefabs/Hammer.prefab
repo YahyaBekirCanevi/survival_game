@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7260002149801923631}
-  - component: {fileID: 7260002149801923616}
+  - component: {fileID: 3404920304134302131}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7260002149801923616
+--- !u!114 &3404920304134302131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7260002149801923617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fbaf43833a6bb941bb0a4dfd1371879, type: 3}
+  m_Script: {fileID: 11500000, guid: 643168e8aeb421d4ab08c56a714464ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objs:
@@ -55,8 +55,8 @@ MonoBehaviour:
   - {fileID: 9148436020897746149, guid: 736c82ab6c4181c4aada8182604a30e5, type: 3}
   - {fileID: 8142833416456373965, guid: f38053cebd2886f448b7e805fe9b3a14, type: 3}
   distanceBetween: 2.4
-  correctPlacement: {r: 0, g: 0.25, b: 0, a: 0}
-  falsePlacement: {r: 0.25, g: 0, b: 0, a: 0}
+  correctPlacement: {r: 0, g: 0.3529412, b: 0, a: 0}
+  falsePlacement: {r: 0.3529412, g: 0, b: 0, a: 0}
   build:
     serializedVersion: 2
     m_Bits: 1024
