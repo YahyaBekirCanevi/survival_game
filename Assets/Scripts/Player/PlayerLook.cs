@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    [SerializeField][Range(.1f, 2)] private float mouseSensitivity = 1.5f;
+    private bool isLocked = true;
     private float xRotation = 0, yRotation = 0;
+    [SerializeField][Range(.1f, 2)] private float mouseSensitivity = 1.5f;
     [SerializeField] private CameraController cam;
     void Awake()
     {
@@ -14,13 +15,23 @@ public class PlayerLook : MonoBehaviour
     void Update()
     {
         Inputs();
-        Look();
+        if (isLocked) Look();
     }
     private void Inputs()
     {
-        xRotation += Input.GetAxis("Mouse X") * mouseSensitivity;
-        yRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-        yRotation = Mathf.Clamp(yRotation, -60, 60);
+        if (isLocked)
+        {
+            xRotation += Input.GetAxis("Mouse X") * mouseSensitivity;
+            yRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+            yRotation = Mathf.Clamp(yRotation, -60, 60);
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            isLocked = !isLocked;
+            Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !isLocked;
+        }
     }
     private void Look()
     {

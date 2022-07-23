@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Damagable : MonoBehaviour
@@ -8,7 +7,7 @@ public class Damagable : MonoBehaviour
     [SerializeField] private float currentHP;
     [SerializeField] private int dropCount = 3;
     public float timeToDestroy { get; set; }
-    public bool canDestroyed = false, damaged = false, destroyParent = false;
+    public bool canDestroyed = false, damaged = false;
     [SerializeField] private GameObject drop;
     public float HP
     {
@@ -49,6 +48,6 @@ public class Damagable : MonoBehaviour
             for (int i = 0; i < dropCount; i++)
                 Instantiate(drop, drop.transform.position + transform.position + Vector3.up + Random.insideUnitSphere, drop.transform.rotation);
         }
-        Destroy(destroyParent ? transform.parent.gameObject : this.gameObject);
+        Destroy(this.gameObject);
     }
 }

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6144088d18474a64e8592efff06dff6d, type: 3}
+  m_Name: Mushroom
+  m_EditorClassIdentifier: 
+  name: Mushroom
+  prefab: {fileID: 384280333436212191, guid: 692eda49eac0bb2428e63ce953ebf226, type: 3}
+  image: {fileID: 3512912858747093185, guid: a3dd978fcdbd8d244a861e3f9ab884c9, type: 3}
+  itemType: 0
+  description: Mushroom
+  restoreHealthValue: 10
