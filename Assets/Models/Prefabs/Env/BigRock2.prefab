@@ -1,69 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &118287688747077347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3163212337131845865}
-  - component: {fileID: 6310717482811659610}
-  - component: {fileID: 8417514126343019971}
-  m_Layer: 7
-  m_Name: GameObject
-  m_TagString: Stone
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3163212337131845865
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118287688747077347}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 815609696463076398}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6310717482811659610
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118287688747077347}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.0320842, y: 0.02711509, z: 0.04871375}
-  m_Center: {x: 0.001540693, y: -0.00041857446, z: 0.02232403}
---- !u!114 &8417514126343019971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118287688747077347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a007c82cfee98df45a0c3ff14a98fbf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 6
-  currentHP: 6
-  dropCount: 2
-  canDestroyed: 0
-  damaged: 0
-  destroyParent: 1
-  drop: {fileID: 2944732508688692142, guid: 7b469ea467d6e0249a5fcde9f5635266, type: 3}
 --- !u!1 &4623740999384687869
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +11,8 @@ GameObject:
   - component: {fileID: 815609696463076398}
   - component: {fileID: 5767431029738782464}
   - component: {fileID: 1429751825141813346}
-  - component: {fileID: 2827549175391765370}
+  - component: {fileID: -2903218886125381202}
+  - component: {fileID: 7087387871949632632}
   m_Layer: 6
   m_Name: BigRock2
   m_TagString: Stone
@@ -93,8 +30,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
-  m_Children:
-  - {fileID: 3163212337131845865}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -147,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2827549175391765370
+--- !u!64 &-2903218886125381202
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,6 +94,24 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6941436199325133989, guid: 9ab9e718cf73d5649b239d498cfa1d03, type: 3}
+--- !u!114 &7087387871949632632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623740999384687869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a007c82cfee98df45a0c3ff14a98fbf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 6
+  currentHP: 6
+  dropCount: 1
+  canDestroyed: 0
+  damaged: 0
+  drop: {fileID: 8286957180400564934, guid: 56c0fb19776b65e4e962ededde6868da, type: 3}

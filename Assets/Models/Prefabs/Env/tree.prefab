@@ -116,7 +116,7 @@ MonoBehaviour:
   canDestroyed: 0
   damaged: 0
   destroyParent: 0
-  drop: {fileID: 7894106540103098980, guid: 16fd7ff9458204b458f75d7fc2784d43, type: 3}
+  drop: {fileID: 6004581524083563333, guid: 423104469e6adaa4b8758999db33b3e1, type: 3}
 --- !u!1 &8758318930086944089
 GameObject:
   m_ObjectHideFlags: 0

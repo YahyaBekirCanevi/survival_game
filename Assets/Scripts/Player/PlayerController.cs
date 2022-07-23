@@ -5,12 +5,13 @@ enum MovementType { Idle, Walk, Run, Crouch, Jump }
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    #region variables
     private float yScale;
+    [Header("Movement")]
     [ShowOnly, SerializeField] private float speed;
     [ShowOnly, SerializeField] private Vector3 move;
     [ShowOnly, SerializeField] private MovementType movementType;
-
-    [Header("Movement")]
+    [ShowOnly, SerializeField] private bool isGrounded, isCrouching, isRunning, isJumped;
     [SerializeField] private float walkSpeed = 8;
     [SerializeField] private float lowSpeed = 4;
     [SerializeField] private float runSpeed = 12;
@@ -22,16 +23,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float airDrag = 2f;
     private CapsuleCollider cc;
     private Rigidbody rb;
+    #endregion
     private float GroundDistance
     {
         get => Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 30) ? hit.distance : 30;
     }
-    [SerializeReference] private bool isGrounded, isCrouching, isRunning;
     public bool IsGrounded { get => isGrounded; }
     public float MovementSpeed { get => move.normalized.magnitude; }
     private bool Grounded
     {
-        get => GroundDistance <= 1.25f;
+        get => GroundDistance <= 1.1f;
     }
     void Awake()
     {
@@ -50,11 +51,11 @@ public class PlayerController : MonoBehaviour
 
     private void Inputs()
     {
-        float ver = Input.GetAxisRaw("Vertical");
-        float hor = Input.GetAxisRaw("Horizontal");
-        move = transform.forward * ver + transform.right * hor;
+
+        move = PlayerInput.movementInput(transform);
 
         isCrouching = Input.GetKey(KeyCode.LeftControl);
+        isJumped = Input.GetKeyDown(KeyCode.Space);
         isRunning = Input.GetKey(KeyCode.LeftShift);
     }
 
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour
         Jump();
 
         cc.height = movementType == MovementType.Crouch ? yScale * 0.5f : yScale;
-        body.localScale = Vector3.one * cc.height;
+        body.localScale = Vector3.one * cc.height * .5f;
     }
     private float CalculateSpeed()
     {
@@ -86,8 +87,6 @@ public class PlayerController : MonoBehaviour
                         ? MovementType.Walk
                         : MovementType.Idle
             : MovementType.Jump;
-
-
 
         switch (movementType)
         {
@@ -112,7 +111,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && isJumped)
         {
             rb.AddForce(jumpStrength * Vector3.up, ForceMode.Impulse);
         }

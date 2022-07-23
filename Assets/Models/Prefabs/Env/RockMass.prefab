@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1866171860349825330}
   - component: {fileID: 5192463939953452942}
   - component: {fileID: 6776740457644399414}
+  - component: {fileID: 4008162617279105206}
   m_Layer: 6
   m_Name: RockMass
   m_TagString: Stone
@@ -29,8 +30,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
-  m_Children:
-  - {fileID: 6672794334239267947}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -97,67 +97,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8746606793047837950, guid: 9ab9e718cf73d5649b239d498cfa1d03, type: 3}
---- !u!1 &9184061620529478473
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6672794334239267947}
-  - component: {fileID: 1297192532583695302}
-  - component: {fileID: 4997402738073823956}
-  m_Layer: 7
-  m_Name: GameObject
-  m_TagString: Stone
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6672794334239267947
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9184061620529478473}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 9014653331708768016}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1297192532583695302
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9184061620529478473}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.069214396, y: 0.13020279, z: 0.06569011}
-  m_Center: {x: 0.000094700605, y: 0.0011654419, z: 0.013589157}
---- !u!114 &4997402738073823956
+--- !u!114 &4008162617279105206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9184061620529478473}
+  m_GameObject: {fileID: 1729276949984286793}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a007c82cfee98df45a0c3ff14a98fbf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 6
-  currentHP: 6
-  dropCount: 2
+  maxHP: 12
+  currentHP: 12
+  dropCount: 3
   canDestroyed: 0
   damaged: 0
   destroyParent: 1
-  drop: {fileID: 2944732508688692142, guid: 7b469ea467d6e0249a5fcde9f5635266, type: 3}
+  drop: {fileID: 2903484264600846403, guid: e82248d3e637aa146bd77116154b427c, type: 3}
