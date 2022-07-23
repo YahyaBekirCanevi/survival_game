@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bow : Weapon
@@ -21,10 +19,10 @@ public class Bow : Weapon
         if (Input.GetKeyUp(KeyCode.Mouse0) && !released)
             Fire();
 
-        if (cc.zoom)
-            cc.Zoom();
+        if (cam.zoom)
+            cam.Zoom();
         else
-            cc.UnZoom();
+            cam.UnZoom();
         anim.SetBool("attack", Input.GetKey(KeyCode.Mouse0) && !released);
         anim.SetBool("release", released);
     }
@@ -51,7 +49,7 @@ public class Bow : Weapon
         if (isAttacking && castfromCamera)
         {
             base.Damage(rate);
-            RaycastHit hit = cc.CastHit(range, damagable);
+            RaycastHit hit = cam.CastHit(range, damagable);
             GameObject a = Instantiate(arrow, hit.point - (hit.normal * .25f), Quaternion.Euler(-hit.normal));
             Arrow ar = a.GetComponent<Arrow>();
             ar.parent = this.transform;

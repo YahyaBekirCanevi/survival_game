@@ -514,7 +514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4445309836222418131}
   - component: {fileID: 9125088318116207506}
-  - component: {fileID: 8260078310465143183}
+  - component: {fileID: 8027105565997367660}
   m_Layer: 8
   m_Name: bow
   m_TagString: Untagged
@@ -557,7 +557,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8260078310465143183
+--- !u!114 &8027105565997367660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -566,7 +566,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3961823050737260137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c07cf3cec7e56184ebcde3d688b8f57e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9404e8878955ee847b396a044d7c0a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 4

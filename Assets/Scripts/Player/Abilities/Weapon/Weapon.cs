@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +5,7 @@ public class Weapon : MonoBehaviour
 {
     protected Animator anim;
     protected PlayerController pc;
-    protected CameraController cc;
+    protected CameraController cam;
     protected bool isAttacking = false;
     public bool TrueAttack { get; protected set; }
     protected int noHitAttack = 0;
@@ -22,7 +19,7 @@ public class Weapon : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         pc = transform.GetComponentInParent<PlayerController>();
-        cc = GameObject.FindObjectOfType<CameraController>();
+        cam = GameObject.FindObjectOfType<CameraController>();
         InvokeRepeating("Cast", .1f, .2f);
     }
     protected virtual void Update()
@@ -47,7 +44,7 @@ public class Weapon : MonoBehaviour
         crosshair.color = TrueAttack ? Color.red : Color.white;
         Vector3 speed = pc.GetComponent<Rigidbody>().velocity;
         speed.y = 0;
-        anim.SetFloat("speed", pc.IsGrounded ? speed.normalized.magnitude : 0);
+        anim.SetFloat("speed", pc.MovementSpeed);
         if (weaponType != WeaponType.Bow) anim.SetBool("attack", isAttacking);
     }
     public virtual void Damage(float rate)
@@ -61,31 +58,21 @@ public class Weapon : MonoBehaviour
     }
     private void Cast()
     {
-        castfromCamera = cc.Cast(range, damagable);
+        castfromCamera = cam.Cast(range, damagable);
     }
     protected string AttackTag()
     {
-        string tag = "";
         switch (weaponType)
         {
             case WeaponType.Axe:
-                {
-                    tag = "Tree";
-                    break;
-                }
+                return "Tree";
             case WeaponType.Pickaxe:
-                {
-                    tag = "Stone";
-                    break;
-                }
+                return "Stone";
             case WeaponType.Bow:
-                {
-                    tag = "Animal";
-                    break;
-                }
-            default: break;
+                return "Animal";
+            default:
+                return "";
         }
-        return tag;
     }
     public void FinishAttack() => isAttacking = false;
     protected enum WeaponType { None, Axe, Pickaxe, Bow }
