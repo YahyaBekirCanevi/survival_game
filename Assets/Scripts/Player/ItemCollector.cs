@@ -7,6 +7,20 @@ public class ItemCollector : MonoBehaviour
     [SerializeField] private LayerMask collectable;
     [SerializeField] private Text collectableText;
     [SerializeField] private CameraController cam;
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+    }
     private void Update()
     {
         Collect(cam.Cast(3, collectable));

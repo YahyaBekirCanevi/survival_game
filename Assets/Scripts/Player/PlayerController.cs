@@ -41,8 +41,18 @@ public class PlayerController : MonoBehaviour
         yScale = cc.height;
         movementType = MovementType.Idle;
         rb.freezeRotation = true;
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+    }
     void Update()
     {
         Inputs();
@@ -51,8 +61,9 @@ public class PlayerController : MonoBehaviour
 
     private void Inputs()
     {
-
-        move = PlayerInput.movementInput(transform);
+        float ver = Input.GetAxisRaw("Vertical");
+        float hor = Input.GetAxisRaw("Horizontal");
+        move = transform.forward * ver + transform.right * hor;
 
         isCrouching = Input.GetKey(KeyCode.LeftControl);
         isJumped = Input.GetKeyDown(KeyCode.Space);
@@ -61,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void ControlDrag()
     {
-        rb.drag = isGrounded ? groundDrag : airDrag;
+        rb.drag = isGrounded ? (move.magnitude == 0 ? 200 : groundDrag) : airDrag;
     }
 
     void FixedUpdate()

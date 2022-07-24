@@ -6,6 +6,21 @@ public class Bow : Weapon
     private Arrow _arrow;
     private bool released = true;
     [SerializeField] private Transform arrowParent;
+    protected override void Awake()
+    {
+        base.Awake();
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+    }
     protected override void Update()
     {
         base.Update();
@@ -19,7 +34,7 @@ public class Bow : Weapon
         if (Input.GetKeyUp(KeyCode.Mouse0) && !released)
             Fire();
 
-        if (cam.zoom)
+        if (Input.GetKey(KeyCode.Mouse1))
             cam.Zoom();
         else
             cam.UnZoom();
