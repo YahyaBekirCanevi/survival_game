@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
 
-        cc.height = movementType == MovementType.Crouch ? yScale * 0.5f : yScale;
+        cc.height = isCrouching ? yScale * 0.5f : yScale;
         body.localScale = Vector3.one * cc.height * .5f;
     }
     private float CalculateSpeed()

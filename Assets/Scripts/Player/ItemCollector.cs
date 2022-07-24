@@ -34,7 +34,6 @@ public class ItemCollector : MonoBehaviour
         }
         collectableText.enabled = true;
         var item = collect.GetComponent<Item>();
-        print($"{collect.gameObject.name} {item.item.name}");
         if (Input.GetKeyDown(KeyCode.F))
         {
             inventory.AddItem(item.item);
@@ -44,5 +43,6 @@ public class ItemCollector : MonoBehaviour
     private void OnApplicationQuit()
     {
         inventory.Container.Clear();
+        inventory.Selected = null;
     }
 }
