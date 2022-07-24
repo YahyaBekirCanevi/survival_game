@@ -5,6 +5,7 @@ public class Build : MonoBehaviour
 {
     [SerializeField] private GameObject[] objs;
     [SerializeField] private float distanceBetween;
+    [SerializeField] private ItemObject item;
     [SerializeField][ColorUsage(true, true)] private Color correctPlacement, falsePlacement;
     [SerializeField] private LayerMask build;
     [SerializeField] private Material ghostMaterial;

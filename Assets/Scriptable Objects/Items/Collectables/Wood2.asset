@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff8400e8cbf7ad9469a1f52f5a01bdeb, type: 3}
-  m_Name: Rock2
+  m_Name: Wood2
   m_EditorClassIdentifier: 
-  name: Rock
-  prefab: {fileID: 2944732508688692142, guid: 7b469ea467d6e0249a5fcde9f5635266, type: 3}
-  image: {fileID: 3236336251049109279, guid: a3dd978fcdbd8d244a861e3f9ab884c9, type: 3}
+  name: Wood
+  prefab: {fileID: 7894106540103098980, guid: 16fd7ff9458204b458f75d7fc2784d43, type: 3}
+  image: {fileID: -6110656803992641779, guid: ba07be2655d91fd4d8d236a027dc1685, type: 3}
   itemType: 1
-  description: Rock 1
+  description: Wood
   amount: 0
