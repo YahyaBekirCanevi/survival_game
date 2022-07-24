@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     protected int noHitAttack = 0;
     [SerializeField] protected float damage;
     [SerializeField] protected float range;
-    [SerializeField] protected WeaponType weaponType;
+    [SerializeField] protected ItemObject item;
     [SerializeField] protected Image crosshair;
     [SerializeField] protected LayerMask damagable;
     public Collider castfromCamera { get; protected set; }
@@ -57,7 +57,7 @@ public class Weapon : MonoBehaviour
         Vector3 speed = pc.GetComponent<Rigidbody>().velocity;
         speed.y = 0;
         anim.SetFloat("speed", pc.MovementSpeed);
-        if (weaponType != WeaponType.Bow) anim.SetBool("attack", isAttacking);
+        if (item.name.ToLower() != "bow") anim.SetBool("attack", isAttacking);
     }
     public virtual void Damage(float rate)
     {
@@ -74,13 +74,13 @@ public class Weapon : MonoBehaviour
     }
     protected string AttackTag()
     {
-        switch (weaponType)
+        switch (item.name.ToLower())
         {
-            case WeaponType.Axe:
+            case "axe":
                 return "Tree";
-            case WeaponType.Pickaxe:
+            case "pickaxe":
                 return "Stone";
-            case WeaponType.Bow:
+            case "bow":
                 return "Animal";
             default:
                 return "";

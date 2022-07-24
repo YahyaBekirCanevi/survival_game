@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Rock
   prefab: {fileID: 2944732508688692142, guid: 7b469ea467d6e0249a5fcde9f5635266, type: 3}
-  image: {fileID: 3236336251049109279, guid: a3dd978fcdbd8d244a861e3f9ab884c9, type: 3}
+  image: {fileID: 3386662938922423588, guid: ba07be2655d91fd4d8d236a027dc1685, type: 3}
   itemType: 1
   description: Rock 1
   amount: 0

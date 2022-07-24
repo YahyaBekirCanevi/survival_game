@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Mushroom
   prefab: {fileID: 384280333436212191, guid: 692eda49eac0bb2428e63ce953ebf226, type: 3}
-  image: {fileID: 3512912858747093185, guid: a3dd978fcdbd8d244a861e3f9ab884c9, type: 3}
+  image: {fileID: -7263262467203474343, guid: ba07be2655d91fd4d8d236a027dc1685, type: 3}
   itemType: 0
   description: Mushroom
   restoreHealthValue: 10
