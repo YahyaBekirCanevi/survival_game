@@ -15,12 +15,24 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected Image crosshair;
     [SerializeField] protected LayerMask damagable;
     public Collider castfromCamera { get; protected set; }
-    protected void Start()
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
         pc = transform.GetComponentInParent<PlayerController>();
         cam = GameObject.FindObjectOfType<CameraController>();
         InvokeRepeating("Cast", .1f, .2f);
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        anim.SetFloat("speed", 0);
+        enabled = newGameState == GameState.Gameplay;
     }
     protected virtual void Update()
     {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +11,20 @@ public class Door : MonoBehaviour
     [SerializeField] private bool open = false;
     private float angle = 0;
     private CameraController cam;
-    private void Start()
+    private void Awake()
     {
         cam = GameObject.FindObjectOfType<CameraController>();
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
     }
     void Update()
     {

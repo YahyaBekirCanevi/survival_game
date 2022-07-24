@@ -1,15 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Build : MonoBehaviour
 {
     [SerializeField] private GameObject[] objs;
     [SerializeField] private float distanceBetween;
-    [SerializeField] [ColorUsage(true, true)] private Color correctPlacement, falsePlacement;
+    [SerializeField][ColorUsage(true, true)] private Color correctPlacement, falsePlacement;
     [SerializeField] private LayerMask build;
     [SerializeField] private Material ghostMaterial;
     [SerializeField] private Camera _camera;
@@ -21,6 +17,20 @@ public class Build : MonoBehaviour
     private int index = 0;
     private bool rePos = false, released = false, correctPlace = true;
     private Ray ray;
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.V) && released)

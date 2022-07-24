@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class InventoryDisplay : MonoBehaviour
 {
-    [SerializeField] private bool isOpen = false;
+    private bool isOpen = true;
     private RectTransform context;
     private Vector2 destinedSize;
     [SerializeField] private float width, height;
@@ -12,7 +12,7 @@ public class InventoryDisplay : MonoBehaviour
     [SerializeField] private List<GameObject> images;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Sprite defaultSprite;
-    private void Start()
+    private void Awake()
     {
         context = GetComponent<RectTransform>();
         for (int i = 0; i < 8; i++)
@@ -26,6 +26,7 @@ public class InventoryDisplay : MonoBehaviour
                 images[i].transform.GetChild(0).GetComponent<Image>().sprite = inventory.Container[i].image;
             }
         }
+        Activate();
     }
     void Update()
     {
@@ -38,6 +39,13 @@ public class InventoryDisplay : MonoBehaviour
     private void Activate()
     {
         isOpen = !isOpen;
+
+        GameState newGameState = isOpen ? GameState.Paused : GameState.Gameplay;
+        GameStateManager.Instance.SetState(newGameState);
+
+        Cursor.lockState = isOpen ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = isOpen;
+
         destinedSize = isOpen ? new Vector2(width, height) : new Vector2(0, 0);
         if (isOpen) HideChildren();
         context.sizeDelta = destinedSize;

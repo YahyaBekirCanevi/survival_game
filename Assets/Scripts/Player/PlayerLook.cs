@@ -11,6 +11,17 @@ public class PlayerLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         cam = GameObject.FindObjectOfType<CameraController>();
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
     }
     void Update()
     {
@@ -24,13 +35,6 @@ public class PlayerLook : MonoBehaviour
             xRotation += Input.GetAxis("Mouse X") * mouseSensitivity;
             yRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
             yRotation = Mathf.Clamp(yRotation, -60, 60);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            isLocked = !isLocked;
-            Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !isLocked;
         }
     }
     private void Look()

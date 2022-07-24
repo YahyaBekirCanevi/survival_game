@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -10,7 +8,6 @@ public class CameraController : MonoBehaviour
     private float perlinScale;
     private float shakeDuration;
     private float timeCount = 0;
-    public bool zoom { get; set; }
     [SerializeField] private Camera main, weapon;
     void Update()
     {
@@ -25,7 +22,6 @@ public class CameraController : MonoBehaviour
             availableToShake = false;
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.up * 2, Time.deltaTime);
         }
-        zoom = Input.GetKey(KeyCode.Mouse1);
     }
     public void Zoom()
     {
