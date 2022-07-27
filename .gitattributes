@@ -1,1 +1,1 @@
-*.shader linguist-detectable=false
+*.* linguist-language=C#
