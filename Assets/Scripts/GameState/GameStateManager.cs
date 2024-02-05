@@ -5,8 +5,7 @@ public class GameStateManager
     {
         get
         {
-            if (_instance == null)
-                _instance = new GameStateManager();
+            _instance ??= new GameStateManager();
             return _instance;
         }
     }

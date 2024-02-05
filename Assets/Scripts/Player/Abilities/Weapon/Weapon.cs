@@ -50,7 +50,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                anim.SetInteger("attackType", (noHitAttack++) % 2);
+                anim.SetInteger("attackType", noHitAttack++ % 2);
             }
         }
         crosshair.color = TrueAttack ? Color.red : Color.white;

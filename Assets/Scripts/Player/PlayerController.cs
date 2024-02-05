@@ -85,20 +85,23 @@ public class PlayerController : MonoBehaviour
         Jump();
 
         cc.height = isCrouching ? yScale * 0.5f : yScale;
-        body.localScale = Vector3.one * cc.height * .5f;
+        body.localScale = .5f * cc.height * Vector3.one;
+    }
+    private MovementType GetMovementType()
+    {
+        if (!isGrounded)
+            return MovementType.Jump;
+        if (isCrouching)
+            return MovementType.Crouch;
+        if (isRunning)
+            return MovementType.Run;
+        if (move.magnitude > 0)
+            return MovementType.Walk;
+        return MovementType.Idle;
     }
     private float CalculateSpeed()
     {
-        movementType = isGrounded
-            ? isCrouching
-                ? MovementType.Crouch
-                : isRunning
-                    ? MovementType.Run
-                    : move.magnitude > 0
-                        ? MovementType.Walk
-                        : MovementType.Idle
-            : MovementType.Jump;
-
+        movementType = GetMovementType();
         switch (movementType)
         {
             case MovementType.Idle:
@@ -117,7 +120,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        move = move.normalized * speed * (isGrounded ? 4f : 0.5f);
+        move = (isGrounded ? 4f : 0.5f) * speed * move.normalized;
         rb.AddForce(move, ForceMode.Acceleration);
     }
     private void Jump()
