@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GreenLeaf
   m_Shader: {fileID: -6465566751694194690, guid: 585a314a29c6ff946883870d0b3dd8f4, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -79,9 +80,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
+    - Vector1_1db23ed5895b411f8a162c638c2c7b8d: 0.2
     - Vector1_48b7c42bbe3e4550baa3aacc0232e3cb: 0
     - Vector1_60a61b092f414b518b0b277b01abf69a: 0.541
+    - Vector1_681b25dd1f7e4595a0e0d31418d4a0f0: 1.2
     - Vector1_91a87529317147d6a4f88157655d58b0: 0
     - Vector1_92bad7bc9b074cdab501ffb1c84aedb8: 1
     - Vector1_c28761ce42144768ad6c83734bbd72db: 1
@@ -102,6 +106,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -115,6 +120,7 @@ Material:
     - Color_58f66e4aea5b4360a2de6bd5c0be1a07: {r: 0.2446778, g: 0.5471698, b: 0.29015723, a: 1}
     - Color_7c62398c69194ba3a9a3bd4cc9966d0c: {r: 0.11764706, g: 0.4509804, b: 0.16862746, a: 1}
     - Color_dcf92b552f4141728b65af684340a360: {r: 0.01886791, g: 0.01886791, b: 0.01886791, a: 1}
+    - Vector2_6fc79699206344efbb9d9b15e1d73866: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.45809656, g: 0.6792453, b: 0.4190815, a: 1}
     - _Color: {r: 0.3364928, g: 0.7264151, b: 0.26315412, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -132,4 +138,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 4
+  version: 5
