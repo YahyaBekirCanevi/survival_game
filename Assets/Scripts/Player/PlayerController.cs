@@ -1,130 +1,119 @@
 using UnityEngine;
 
-enum MovementType { Idle, Walk, Run, Crouch, Jump }
-
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    #region variables
-    private float yScale;
     [Header("Movement")]
-    [ShowOnly, SerializeField] private float speed;
-    [ShowOnly, SerializeField] private Vector3 move;
-    [ShowOnly, SerializeField] private MovementType movementType;
-    [ShowOnly, SerializeField] private bool isGrounded, isCrouching, isRunning, isJumped;
-    [SerializeField] private float walkSpeed = 8;
-    [SerializeField] private float lowSpeed = 4;
-    [SerializeField] private float runSpeed = 12;
-    [SerializeField] private float jumpStrength = 8;
-    [SerializeField] private Transform body;
-
-    [Header("Drag")]
+    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float airControlMultiplier = 0.5f;
     [SerializeField] private float groundDrag = 6f;
     [SerializeField] private float airDrag = 2f;
-    private CapsuleCollider cc;
+
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private float jumpTime = 0.3f;
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float jumpBufferTime = 0.2f;
+    [SerializeField] private float coyoteTime = 0.2f;
+
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.3f;
+    [SerializeField] private LayerMask groundLayer;
+
     private Rigidbody rb;
-    #endregion
-    private float GroundDistance
+    private Vector3 inputDir;
+    private bool isGrounded;
+    private float jumpBufferCounter;
+    private float coyoteTimeCounter;
+    private float jumpTimeCounter;
+    private bool isJumping;
+    private float currentSpeed;
+
+    private void Awake()
     {
-        get => Physics.Raycast(transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 30) ? hit.distance : 30;
-    }
-    public bool IsGrounded { get => isGrounded; }
-    public float MovementSpeed { get => move.normalized.magnitude; }
-    private bool Grounded
-    {
-        get => GroundDistance <= 1.1f;
-    }
-    void Awake()
-    {
-        cc = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
-        yScale = cc.height;
-        movementType = MovementType.Idle;
         rb.freezeRotation = true;
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-    }
 
-    void OnDestroy()
-    {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        enabled = newGameState == GameState.Gameplay;
-    }
-    void Update()
-    {
-        Inputs();
-        ControlDrag();
-    }
-
-    private void Inputs()
-    {
-        float ver = Input.GetAxisRaw("Vertical");
-        float hor = Input.GetAxisRaw("Horizontal");
-        move = transform.forward * ver + transform.right * hor;
-
-        isCrouching = Input.GetKey(KeyCode.LeftControl);
-        isJumped = Input.GetKeyDown(KeyCode.Space);
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-    }
-
-    private void ControlDrag()
-    {
-        rb.drag = isGrounded ? (move.magnitude == 0 ? 200 : groundDrag) : airDrag;
-    }
-
-    void FixedUpdate()
-    {
-        isGrounded = Grounded;
-
-        speed = CalculateSpeed();
-
-        Move();
-        Jump();
-
-        cc.height = isCrouching ? yScale * 0.5f : yScale;
-        body.localScale = Vector3.one * cc.height * .5f;
-    }
-    private float CalculateSpeed()
-    {
-        movementType = isGrounded
-            ? isCrouching
-                ? MovementType.Crouch
-                : isRunning
-                    ? MovementType.Run
-                    : move.magnitude > 0
-                        ? MovementType.Walk
-                        : MovementType.Idle
-            : MovementType.Jump;
-
-        switch (movementType)
+        if (groundCheck == null)
         {
-            case MovementType.Idle:
-                return 0;
-            case MovementType.Walk:
-                return walkSpeed;
-            case MovementType.Run:
-                return runSpeed;
-            case MovementType.Crouch:
-                return lowSpeed;
-            case MovementType.Jump:
-                return walkSpeed;
-            default:
-                return 0;
+            groundCheck = new GameObject("GroundCheck").transform;
+            groundCheck.parent = transform;
+            groundCheck.localPosition = Vector3.down * 0.01f;
         }
     }
-    private void Move()
+
+    private void Update()
     {
-        move = move.normalized * speed * (isGrounded ? 4f : 0.5f);
-        rb.AddForce(move, ForceMode.Acceleration);
+        inputDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpBufferCounter = jumpBufferTime;
+
+        rb.drag = isGrounded ? groundDrag : airDrag;
     }
-    private void Jump()
+
+    private void FixedUpdate()
     {
-        if (isGrounded && isJumped)
+        GroundCheck();
+        HandleMovement();
+        HandleJump();
+        ApplyJumpPhysics();
+    }
+
+    private void GroundCheck()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+        coyoteTimeCounter = isGrounded ? coyoteTime : coyoteTimeCounter - Time.fixedDeltaTime;
+        jumpBufferCounter -= Time.fixedDeltaTime;
+    }
+
+    private void HandleMovement()
+    {
+        Vector3 move = transform.TransformDirection(inputDir) * (isGrounded ? moveSpeed : moveSpeed * airControlMultiplier);
+        rb.velocity = new Vector3(move.x, rb.velocity.y, move.z);
+        currentSpeed = new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude;
+    }
+
+    private void HandleJump()
+    {
+        if (jumpBufferCounter > 0 && coyoteTimeCounter > 0)
         {
-            rb.AddForce(jumpStrength * Vector3.up, ForceMode.Impulse);
+            // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jumpTimeCounter = jumpTime;
+            isJumping = true;
+            jumpBufferCounter = 0;
+        }
+
+        if (Input.GetKey(KeyCode.Space) && isJumping && jumpTimeCounter > 0)
+        {
+            rb.AddForce(Vector3.up * jumpForce * 0.5f, ForceMode.Force);
+            jumpTimeCounter -= Time.fixedDeltaTime;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+            isJumping = false;
+    }
+
+    private void ApplyJumpPhysics()
+    {
+        if (rb.velocity.y < 0)
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+        else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+    }
+
+    public bool IsGrounded => isGrounded;
+    public float CurrentSpeed => currentSpeed;
+    public Vector3 MoveDirection => inputDir;
+
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
 }

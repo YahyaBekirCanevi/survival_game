@@ -33,6 +33,11 @@ public class CameraController : MonoBehaviour
         main.fieldOfView = Mathf.Lerp(main.fieldOfView, 70, .4f);
         weapon.fieldOfView = Mathf.Lerp(weapon.fieldOfView, 60, .4f);
     }
+    public void SetFOV(float fov)
+    {
+        main.fieldOfView = Mathf.Lerp(main.fieldOfView, fov, .4f);
+        weapon.fieldOfView = Mathf.Lerp(weapon.fieldOfView, fov + 10f, .4f);
+    }
     private float GetPerlin(float seed) => (Mathf.PerlinNoise(seed, timeCount * Mathf.Pow(amountOfShake, shakeMultiplier)) - .5f) * 2;
     private Vector3 GetNoiseVector() => new Vector3(GetPerlin(1), GetPerlin(10), 0) * perlinScale;
     public void ShakeLow()

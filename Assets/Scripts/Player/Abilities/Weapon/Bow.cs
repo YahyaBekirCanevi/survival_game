@@ -2,13 +2,29 @@ using UnityEngine;
 
 public class Bow : Weapon
 {
-    public GameObject arrow;
-    private Arrow _arrow;
+    [Header("Bow Settings")]
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private Transform arrowSpawnPoint;
+    [SerializeField] private float maxDrawTime = 2f;
+    [SerializeField] private float minArrowSpeed = 20f;
+    [SerializeField] private float maxArrowSpeed = 40f;
+    [SerializeField] private float zoomFOV = 30f;
+    [SerializeField] private float normalFOV = 60f;
+    [SerializeField] private float maxPullbackDistance = 0.5f; // How far back the arrow can be pulled
+
+    private Arrow currentArrow;
+    private float drawTime;
+    private bool isDrawing;
+    private bool isZoomed;
     private bool released = true;
-    [SerializeField] private Transform arrowParent;
+
     protected override void Awake()
     {
         base.Awake();
+        if (arrowSpawnPoint == null)
+        {
+            arrowSpawnPoint = transform;
+        }
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
@@ -21,54 +37,107 @@ public class Bow : Weapon
     {
         enabled = newGameState == GameState.Gameplay;
     }
+
     protected override void Update()
     {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            Release();
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && released)
-            CreateArrow();
-        if (Input.GetKeyUp(KeyCode.Mouse0) && !released)
-            Fire();
 
-        if (Input.GetKey(KeyCode.Mouse1))
-            cam.Zoom();
-        else
-            cam.UnZoom();
-        anim.SetBool("attack", Input.GetKey(KeyCode.Mouse0) && !released);
-        anim.SetBool("release", released);
+        // Handle bow drawing
+        if (Input.GetKeyDown(KeyCode.Mouse0) && currentArrow == null)
+        {
+            StartDrawing();
+        }
+        else if (Input.GetKey(KeyCode.Mouse0) && isDrawing)
+        {
+            ContinueDrawing();
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse0) && isDrawing)
+        {
+            ReleaseArrow();
+        }
+
+        // Handle zoom
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            StartZoom();
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            StopZoom();
+        }
+
+        // Update animations
+        UpdateAnimations();
     }
-    private void CreateArrow()
+
+    private void StartDrawing()
     {
-        GameObject go = Instantiate(arrow);
-        _arrow = go.GetComponent<Arrow>();
-        _arrow.parent = arrowParent;
+        isDrawing = true;
         released = false;
+        drawTime = 0f;
+        SpawnArrow();
     }
-    private void Fire() => _arrow.fire = released = true;
-    private void Release()
+
+    private void ContinueDrawing()
     {
-        released = true;
-        _arrow.fire = false;
-        anim.SetBool("attack", false);
-        anim.SetBool("release", true);
-        FinishAttack();
-        Destroy(_arrow.gameObject);
-        TrueAttack = false;
+        drawTime = Mathf.Min(drawTime + Time.deltaTime, maxDrawTime);
+        
+        // Update arrow position and rotation
+        if (currentArrow != null)
+        {
+            float drawProgress = drawTime / maxDrawTime;
+            // Pull back the arrow based on draw progress
+            Vector3 pullbackOffset = -transform.forward * (maxPullbackDistance * drawProgress);
+            currentArrow.transform.position = arrowSpawnPoint.position + pullbackOffset;
+            currentArrow.transform.rotation = arrowSpawnPoint.rotation;
+        }
     }
+
+    private void ReleaseArrow()
+    {
+        if (currentArrow != null)
+        {
+            float drawProgress = drawTime / maxDrawTime;
+            float arrowSpeed = Mathf.Lerp(minArrowSpeed, maxArrowSpeed, drawProgress);
+            currentArrow.Fire();
+            currentArrow = null;
+        }
+        
+        isDrawing = false;
+        released = true;
+        drawTime = 0f;
+    }
+
+    private void SpawnArrow()
+    {
+        GameObject arrowObj = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation);
+        currentArrow = arrowObj.GetComponent<Arrow>();
+        currentArrow.Initialize(arrowSpawnPoint, minArrowSpeed);
+    }
+
+    private void StartZoom()
+    {
+        isZoomed = true;
+        cam.SetFOV(zoomFOV);
+    }
+
+    private void StopZoom()
+    {
+        isZoomed = false;
+        cam.SetFOV(normalFOV);
+    }
+
+    private void UpdateAnimations()
+    {
+        anim.SetBool("attack", isDrawing);
+        anim.SetBool("release", released);
+        anim.SetFloat("drawProgress", drawTime / maxDrawTime);
+        anim.SetBool("isZoomed", isZoomed);
+    }
+
     public override void Damage(float rate)
     {
-        if (isAttacking && castfromCamera)
-        {
-            base.Damage(rate);
-            RaycastHit hit = cam.CastHit(range, damagable);
-            GameObject a = Instantiate(arrow, hit.point - (hit.normal * .25f), Quaternion.Euler(-hit.normal));
-            Arrow ar = a.GetComponent<Arrow>();
-            ar.parent = this.transform;
-            ar.punctured = true;
-        }
+        // Bow doesn't use the base damage system
+        // Damage is handled by the Arrow script
     }
 }

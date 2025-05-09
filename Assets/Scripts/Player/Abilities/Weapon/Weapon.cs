@@ -56,7 +56,7 @@ public class Weapon : MonoBehaviour
         crosshair.color = TrueAttack ? Color.red : Color.white;
         Vector3 speed = pc.GetComponent<Rigidbody>().velocity;
         speed.y = 0;
-        anim.SetFloat("speed", pc.MovementSpeed);
+        anim.SetFloat("speed", pc.CurrentSpeed);
         if (item.name.ToLower() != "bow") anim.SetBool("attack", isAttacking);
     }
     public virtual void Damage(float rate)

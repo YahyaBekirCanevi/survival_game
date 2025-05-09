@@ -1,20 +1,46 @@
 using UnityEngine;
+using System;
 
 public class PlayerLook : MonoBehaviour
 {
+    [Header("Camera Settings")]
+    [SerializeField] private float mouseSensitivity = 1.5f;
+    [SerializeField] private float maxLookAngle = 60f;
+    [SerializeField] private float minLookAngle = -60f;
+    [SerializeField] private float cameraSmoothTime = 0.1f;
+    [SerializeField] private float cameraCollisionRadius = 0.2f;
+    [SerializeField] private float cameraCollisionOffset = 0.2f;
+    [SerializeField] private LayerMask cameraCollisionLayers;
+
+    [Header("References")]
+    [SerializeField] private CameraController cameraController;
+    [SerializeField] private Transform cameraHolder;
+
+    // State
+    private float currentRotationX;
+    private float currentRotationY;
+    private Vector3 currentRotation;
+    private Vector3 smoothVelocity = Vector3.zero;
     private bool isLocked = true;
-    private float xRotation = 0, yRotation = 0;
-    [SerializeField][Range(.1f, 2)] private float mouseSensitivity = 1.5f;
-    [SerializeField] private CameraController cam;
-    void Awake()
+
+    // Events
+    public event Action<bool> OnLockStateChanged;
+
+    private void Awake()
     {
+        if (cameraController == null)
+            cameraController = FindObjectOfType<CameraController>();
+        
+        if (cameraHolder == null)
+            cameraHolder = cameraController.transform;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        cam = GameObject.FindObjectOfType<CameraController>();
+        
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
@@ -23,23 +49,69 @@ public class PlayerLook : MonoBehaviour
     {
         enabled = newGameState == GameState.Gameplay;
     }
-    void Update()
+
+    private void Update()
     {
-        Inputs();
-        if (isLocked) Look();
+        if (!isLocked) return;
+
+        HandleInput();
+        UpdateCameraRotation();
+        HandleCameraCollision();
     }
-    private void Inputs()
+
+    private void HandleInput()
     {
-        if (isLocked)
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        currentRotationX += mouseX;
+        currentRotationY -= mouseY;
+        currentRotationY = Mathf.Clamp(currentRotationY, minLookAngle, maxLookAngle);
+    }
+
+    private void UpdateCameraRotation()
+    {
+        // Smoothly rotate the player
+        Vector3 targetPlayerRotation = new Vector3(0f, currentRotationX, 0f);
+        transform.rotation = Quaternion.Euler(targetPlayerRotation);
+
+        // Smoothly rotate the camera
+        Vector3 targetCameraRotation = new Vector3(currentRotationY, 0f, 0f);
+        cameraHolder.localRotation = Quaternion.Euler(targetCameraRotation);
+    }
+
+    private void HandleCameraCollision()
+    {
+        Vector3 targetPosition = cameraHolder.position;
+        Vector3 direction = cameraHolder.position - transform.position;
+        float distance = direction.magnitude;
+
+        // Check for camera collision
+        if (Physics.SphereCast(transform.position, cameraCollisionRadius, direction.normalized, 
+            out RaycastHit hit, distance, cameraCollisionLayers))
         {
-            xRotation += Input.GetAxis("Mouse X") * mouseSensitivity;
-            yRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-            yRotation = Mathf.Clamp(yRotation, -60, 60);
+            targetPosition = hit.point + (hit.normal * cameraCollisionOffset);
         }
+
+        // Smoothly move camera to target position
+        cameraHolder.position = Vector3.SmoothDamp(
+            cameraHolder.position,
+            targetPosition,
+            ref smoothVelocity,
+            cameraSmoothTime
+        );
     }
-    private void Look()
+
+    public void SetLockState(bool locked)
     {
-        transform.rotation = Quaternion.Euler(0, xRotation, 0);
-        cam.transform.localRotation = Quaternion.Euler(yRotation, 0, 0);
+        isLocked = locked;
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !locked;
+        OnLockStateChanged?.Invoke(locked);
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        mouseSensitivity = Mathf.Clamp(sensitivity, 0.1f, 5f);
     }
 }
